@@ -2,23 +2,37 @@
 
 set -ouex pipefail
 
-### Install packages
+# enable rpmfusion repos and add copr repos
+dnf config-manager setopt rpmfusion-nonfree-steam.enabled=1
+dnf config-manager setopt rpmfusion-nonfree-nvidia-driver.enabled=1
+#dnf config-manager addrepo --from-repofile=https://negativo17.org/repos/fedora-multimedia.repo
+dnf -y copr enable bieszczaders/kernel-cachyos
+dnf -y copr enable bieszczaders/kernel-cachyos-addons
+dnf -y copr enable @xlibre/xlibre-xserver
 
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/43/x86_64/repoview/index.html&protocol=https&redirect=1
+# latest updates
+dnf -y distro-sync --refresh --allowerasing
 
-# this installs a package from fedora repos
-dnf5 install -y tmux 
+# workarounds for container builds:
+# - /var/roothome: dracut resolves /root symlink but target doesn't exist at build time
+# - akmodsbuild sed: remove root check ([[ -w /var ]]) so it works in containers
+# - 01-depmod symlink: run depmod before 05-rpmostree hook (which calls dracut needing modules.dep)
+mkdir -p /var/roothome
+dnf -y install akmods
+sed -i '/if \[\[ -w \/var \]\] ; then/,/fi/d' /usr/sbin/akmodsbuild
+ln -s 50-depmod.install /usr/lib/kernel/install.d/01-depmod.install
 
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
+# cachyos kernel and settings
+dnf -y install kernel-cachyos-devel-matched
+dnf -y remove kernel-core zram-generator-defaults
+dnf -y install cachyos-settings scx-manager
 
-#### Example for enabling a System Unit File
+# nvidia-driver and vaapi/vdpau support
+dnf -y install akmod-nvidia xorg-x11-drv-nvidia-cuda
+dnf -y install libva-nvidia-driver libva-utils vdpauinfo
 
-systemctl enable podman.socket
+# xlibre server and plasma-x11 session
+dnf -y install xlibre-xserver-Xorg plasma-workspace-x11
+
+# install steam
+dnf -y install steam
