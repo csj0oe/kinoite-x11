@@ -9,6 +9,7 @@ dnf config-manager setopt rpmfusion-nonfree-nvidia-driver.enabled=1
 dnf -y copr enable bieszczaders/kernel-cachyos
 dnf -y copr enable bieszczaders/kernel-cachyos-addons
 dnf -y copr enable @xlibre/xlibre-xserver
+dnf -y copr enable sneed/llama-cpp-vulkan 
 
 # latest updates
 dnf -y distro-sync --refresh --allowerasing
@@ -34,5 +35,5 @@ dnf -y install libva-nvidia-driver libva-utils vdpauinfo
 # xlibre server and plasma-x11 session
 dnf -y install xlibre-xserver-Xorg plasma-workspace-x11
 
-# install steam
-dnf -y install steam
+# install steam and llama-cpp
+dnf -y install steam llama-cpp
