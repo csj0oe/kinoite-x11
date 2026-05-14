@@ -41,7 +41,7 @@ dnf -y install steam gamescope mangohud
 
 # install AI stuff
 dnf -y install golang-github-nvidia-container-toolkit
-nvidia-ctk cdi generate -output /etc/cdi/nvidia.yaml
+#nvidia-ctk cdi generate -output /etc/cdi/nvidia.yaml
 dnf -y install llama-cpp
 
 # misc
