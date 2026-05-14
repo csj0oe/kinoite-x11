@@ -3,13 +3,14 @@
 set -ouex pipefail
 
 # enable rpmfusion repos and add copr repos
+dnf config-manager setopt fedora-cisco-openh264.enabled=1
 dnf config-manager setopt rpmfusion-nonfree-steam.enabled=1
 dnf config-manager setopt rpmfusion-nonfree-nvidia-driver.enabled=1
 #dnf config-manager addrepo --from-repofile=https://negativo17.org/repos/fedora-multimedia.repo
 dnf -y copr enable bieszczaders/kernel-cachyos
 dnf -y copr enable bieszczaders/kernel-cachyos-addons
 dnf -y copr enable @xlibre/xlibre-xserver
-dnf -y copr enable sneed/llama-cpp-vulkan 
+dnf -y copr enable sneed/llama-cpp-vulkan
 
 # latest updates
 dnf -y distro-sync --refresh --allowerasing
@@ -35,5 +36,14 @@ dnf -y install libva-nvidia-driver libva-utils vdpauinfo
 # xlibre server and plasma-x11 session
 dnf -y install xlibre-xserver-Xorg plasma-workspace-x11
 
-# install steam and llama-cpp
-dnf -y install steam llama-cpp
+# install steam
+dnf -y install steam gamescope mangohud
+
+# install AI stuff
+dnf -y install golang-github-nvidia-container-toolkit
+nvidia-ctk cdi generate -output /etc/cdi/nvidia.yaml
+dnf -y install llama-cpp
+
+# misc
+dnf -y group install development-tools
+dnf -y install fastfetch
