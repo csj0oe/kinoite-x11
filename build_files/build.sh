@@ -46,4 +46,4 @@ dnf -y install steam gamescope mangohud
 
 # misc
 dnf -y group install development-tools
-dnf -y install fastfetch
+dnf -y install fastfetch nvtop stow
