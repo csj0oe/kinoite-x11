@@ -10,7 +10,7 @@ dnf config-manager setopt rpmfusion-nonfree-nvidia-driver.enabled=1
 dnf -y copr enable bieszczaders/kernel-cachyos
 dnf -y copr enable bieszczaders/kernel-cachyos-addons
 dnf -y copr enable @xlibre/xlibre-xserver
-dnf -y copr enable sneed/llama-cpp-vulkan
+#dnf -y copr enable sneed/llama-cpp-vulkan
 
 # latest updates
 dnf -y distro-sync --refresh --allowerasing
@@ -40,9 +40,9 @@ dnf -y install xlibre-xserver-Xorg plasma-workspace-x11
 dnf -y install steam gamescope mangohud
 
 # install AI stuff
-dnf -y install golang-github-nvidia-container-toolkit
+#dnf -y install golang-github-nvidia-container-toolkit
 #nvidia-ctk cdi generate -output /etc/cdi/nvidia.yaml
-dnf -y install llama-cpp
+#dnf -y install llama-cpp
 
 # misc
 dnf -y group install development-tools
